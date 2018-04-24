@@ -1,0 +1,95 @@
+{% extends "layout/base.html" %}
+
+{%block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.core.standalone.min.css" integrity="sha256-G87V6PpbJj8bN2mydCNeBJ+gVik7FAW60j63N88kV0U=" crossorigin="anonymous" />
+<style>
+    .footable-filtering-search{
+        display: none !important;
+    }    
+</style>
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %} Imobiliária teste {% endblock %}
+
+{% block body %}
+    <div class="row">
+        &nbsp;
+        <div class="col s12">
+           <form method="POST" action="/criabairro">
+                {{ form.hidden_tag() }}
+                <div class="input-field col s5">
+                    {{ form.cidade(size=30, class="validate") }}
+                    <label for="cidade">Cidade</label>
+                </div>
+                <div class="input-field col s5">
+                    {{ form.bairro(size=30, class="validate") }}
+                    <label for="bairro">Bairro</label>
+                </div>
+                <div class="input-field col s2">
+                    &nbsp;
+                    <button class="btn-floating btn-large waves-effect waves-light red"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+            </form>
+        </div>
+                <div class-"col s12">
+                    &nbsp;
+                    
+                    
+                    {% if buscabairros %}
+                    
+                         <table class="highlight responsive-table" data-filtering="true" id="table">
+                            <thead>
+                              <tr>
+                                  <th>Cidade</th>
+                                  <th>Bairro</th>
+                                  <th>Ações</th>
+                              </tr>
+                            </thead>
+                    
+                            <tbody>
+                            {% for bairro in buscabairros %}
+                              <tr>
+                                <td>{{bairro.cidade}}</td>
+                                <td>{{bairro.bairro}}</td>
+                                <td><a href="/deletabairro/{{bairro.id}}" onclick="return confirm('Tem certeza de que deseja excluir esse bairro?');"><i class="fa fa-trash-o fa-2x" aria-hidden="true" title="Deletar"></i></a></td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    {% endif %}
+                </div>
+    </div>
+{% endblock %}
+
+{% block pagination %}
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+    <script>
+        $(document).ready(function() {
+        $('select').material_select();
+      });
+    </script>
+
+<script>
+ tippy('.fa', {
+   arrow: true
+ })
+</script>
+   <script>
+        $("#cidade")
+    .replaceWith('<select id="cidade" name="cidade" class="select-dropdown">' +
+          '<option value=""> </option>' +
+         {% for cidade in buscacidades %}
+          '<option value="{{ cidade.cidade }}"> {{ cidade.cidade }} </option>' +
+       {% endfor %}
+        '</select>');
+        
+    </script>
+{% endblock %}

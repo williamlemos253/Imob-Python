@@ -1,0 +1,156 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{%block head %}
+{{ super() }}
+<script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js"></script>
+
+{% endblock %}
+
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %} Imobiliária teste {% endblock %}
+
+{% block mensagens %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+
+{% set pattern="(?=.)^\$?(([1-9][0-9]{0,2}(,[0-9]{3})*)|[0-9]+)?(\.[0-9]{1,2})?$" %}
+
+    <div class="row">
+        <div class="col s12">
+            &nbsp;
+            <form method="POST" action="/cadastro" enctype="multipart/form-data" onsubmit="ShowDiv();">
+               {{ form.hidden_tag() }}
+               {{ wtf.form_errors(form, hiddens="only") }}
+                <div class="input-field col s6">
+                    <h6>Código do Imóvel</h6> {{ wtf.form_field(form.codigoimovel) }}
+                </div>
+                <div class="input-field col s6">
+                  <h6>Tipo de Negócio</h6>{{ wtf.form_field(form.tiponegocio) }}
+                </div>
+                <div class="input-field col s6">
+                  <h6>Tipo de Imóvel</h6> {{ wtf.form_field(form.tipoimovel) }}
+                </div>
+                <div class="input-field col s6">
+                  <h6>Valor do Imóvel</h6>
+                  {{  wtf.form_field(form.valor, title="Somente números são permitidos nesse campo", pattern = "^(0|[1-9]\d*)$", class="validate", placeholder="ex: 500000") }}
+                </div>  
+                <div class="input-field col s6">
+                   <h6>Cidade</h6> {{  wtf.form_field(form.cidade, id="cidade")  }}
+                </div>
+                
+                <div class="input-field col s6">
+                  <h6>Bairro</h6>
+                      
+                    {{  wtf.form_field(form.bairro, id="bairro") }}
+                
+                </div>
+                <div class="input-field col s3">
+                  <h6>Nº de dormitórios</h6> {{ wtf.form_field(form.ndormitorios, type="number", placeholder="Somente números são permitidos nesse campo", pattern = "[0-9]", class="validate", placeholder="ex: 1") }}
+                </div>  
+                <div class="input-field col s3">
+                  <h6>Nº Suítes</h6>{{ wtf.form_field(form.nsuites, type="number", placeholder="Somente números são permitidos nesse campo", pattern = "[0-9]", class="validate", placeholder="ex: 1") }}
+                </div>
+                <div class="input-field col s3">
+                  <h6>Nº Banheiros</h6> {{ wtf.form_field(form.nbanheiros, type="number", placeholder="Somente números são permitidos nesse campo", pattern = "[0-9]", class="validate", placeholder="ex: 1") }}
+                </div>
+                <div class="input-field col s3">
+                  <h6>Nº Garagens</h6> {{ wtf.form_field(form.ngaragem, type="number", placeholder="Somente números são permitidos nesse campo", pattern = "[0-9]", class="validate", placeholder="ex: 1") }}
+                </div>
+                <div class="input-field col s12 center-align">
+                 
+                    <div class="file-field input-field">
+                        <div class="btn">
+                          <span>Foto destaque</span>
+                           {{  wtf.form_field(form.foto, accept="image/gif, image/jpeg, image/png, image/jpg") }}
+                                    
+                        </div>
+                        <div class="file-path-wrapper">
+                          <input class="file-path validate" type="text" id="uploader">
+                        </div>
+                    </div> 
+                        <sub class="align-center" style="display:none;" id="progress">Aguarde o upload da foto</sub>    
+                        <div class="progress" style="display:none;" id="progress2">
+                          <div class="indeterminate"></div>
+                        </div>
+                        
+                        
+                </div>
+                <div class="col s12">
+                    &nbsp;
+                  <h6>Endereço para o google maps</h6>  {{ wtf.form_field(form.endereco, placeholder="Capao da canoa centro 1075", title="Não use acentos ou caracteres especiais no campo de endereço", pattern="[a-zA-Z0-9]+[a-zA-Z0-9 ]+", class="validate") }}
+                    <sup>Não use acentos e caracteres no campo de endereço, informe a cidade o nome da rua e o número, ex: capao da canoa av getulio vargas 75</sup>
+                </div>
+                <div class="input-field col s12">
+                  <h6>Descrição</h6> {{ form.descricao(class="materialize-textarea") }}
+                </div>
+               
+                <div class="input-field col s12">
+                    <center>
+                        <button class="btn waves-effect waves-light" type="submit" name="action" id="enviar">Enviar
+                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                        </button>
+                    </center>
+                </div>
+                &nbsp;
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+ {% block pagination %}{% endblock %}
+
+{% block footer %}
+{{ super() }}
+
+   <script>
+        $(document).ready(function() {
+        $('#cidade').material_select();
+        $('#tiponegocio').material_select();
+        $('#tipoimovel').material_select();
+      });
+    </script>
+   
+    <script>
+    ClassicEditor
+        .create( document.querySelector( '#descricao' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+    </script>
+    <script>
+        function ShowDiv() {
+                 document.getElementById("progress").style.display = "";
+                 document.getElementById("progress2").style.display = "";
+              }
+    </script>
+   <script>
+        $("#cidade")
+    .replaceWith('<select id="cidade" name="cidade" class="select-dropdown">' +
+          '<option value=""> </option>' +
+         {% for cidade in buscacidades %}
+          '<option value="{{ cidade.cidade }}"> {{ cidade.cidade }} </option>' +
+       {% endfor %}
+        '</select>');
+        
+    </script>
+    <script>
+        $("#cidade").change(function(){
+             $('#bairro').material_select('destroy');
+              $.get('/apibairros/?cidade='+$("#cidade").val(), function(data){
+                   $('#bairro').replaceWith('<select id="bairro" name="bairro">'+data+'</select>');
+                        $('#bairro').material_select();
+
+          });
+  
+             
+
+        });
+    </script>
+{% endblock %}

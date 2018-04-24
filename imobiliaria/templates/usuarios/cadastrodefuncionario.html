@@ -1,0 +1,83 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{%block head %}
+{{ super() }}
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %}Cadastro de corretores{% endblock %}
+
+{% block body %}
+
+&nbsp;
+                   
+    <form class="form form-group" method="POST">
+         {{ Formcadastrofuncionario.hidden_tag() }}
+         {{ wtf.form_errors(Formcadastrofuncionario, hiddens="only") }}
+        <div class="row">
+            <div class="col s12">
+                <h4 class="center">Cadastro de funcionários</h4>
+                &nbsp;
+            </div>
+            <div class="col m6">       
+                {{ wtf.form_field(Formcadastrofuncionario.username, pattern="^[a-z0-9_-]{6,20}$")  }}
+            </div>
+            <div class="col m6">      
+                {{  wtf.form_field(Formcadastrofuncionario.email) }}
+            </div>
+            <div class="col m6">   
+                {{ wtf.form_field(Formcadastrofuncionario.password) }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.confirm) }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.first_name) }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.last_name) }}
+            </div>
+             <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.datanasc, 
+                pattern = "^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$", 
+                oninvalid="this.setCustomValidity('A data de nascimento precisa estar em um formato válido ex: 01/01/1991')") }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.cpf) }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.sexo) }}
+            </div>
+            <div class="col m6">
+                <p>
+                   {{ Formcadastrofuncionario.active }}
+                  <label for="active">Ativo</label>
+                </p>
+            </div>
+            <div class="col s12">
+                &nbsp;
+                 <div class="center">{{ wtf.form_field(Formcadastrofuncionario.salvar , class="btn btn-primary btn-lg") }}</div>
+            </div>
+        </div>
+    </form>
+    
+    
+
+{% endblock %}
+
+  {% block pagination %}
+    {% endblock %}
+
+{% block footer %}
+{{ super() }}
+<script>
+        $(document).ready(function() {
+        $('select').material_select();
+      });
+</script>
+
+{% endblock %}

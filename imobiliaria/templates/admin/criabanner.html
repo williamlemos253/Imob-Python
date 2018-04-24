@@ -1,0 +1,113 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{%block head %}
+{{ super() }}
+<script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js"></script>
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %} Imobiliária teste {% endblock %}
+
+{% block body %}
+    <div class="row">
+        &nbsp;
+           <form method="POST" action="/criabanner"  enctype="multipart/form-data" onsubmit="ShowDiv();">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_errors(form, hiddens="only") }}
+                <div class="input-field col s6">
+                 
+                    <div class="file-field input-field">
+                        <div class="btn">
+                          <span>Banner</span>
+                           {{  wtf.form_field(form.banner, accept="image/gif, image/jpeg, image/png, image/jpg") }}
+                                    
+                        </div>
+                        <div class="file-path-wrapper">
+                          <input class="file-path validate" type="text" id="banner">
+                        </div>
+                    </div> 
+                        <sub class="align-center" style="display:none;" id="progress">Aguarde o upload da foto</sub>    
+                        <div class="progress" style="display:none;" id="progress2">
+                          <div class="indeterminate"></div>
+                        </div>
+                </div>
+                
+                <div class="col s6">
+                    <h6>Posição do Texto</h6> {{ wtf.form_field(form.posicaotexto) }}
+                </div>
+                 <div class="col s12">
+                    <h6>Link</h6> {{ wtf.form_field(form.link) }}
+                </div>
+                <div class="input-field col s12">
+                    {{ wtf.form_field(form.texto, class="materialize-textarea") }}
+                </div>
+                <div class="input-field col s12 center-align">
+                    <button class="btn-floating btn-large waves-effect waves-light red"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+                
+                
+            </form>
+            
+            
+                <div class-"col s12">
+                    &nbsp;
+                    
+                    
+                    {% if buscabanner %}
+                    
+                         <table class="highlight responsive-table">
+                            <thead>
+                              <tr>
+                                  <th>Banner</th>
+                                  <th>Texto</th>
+                                  <th>Link</th>
+                                  <th>Ações</th>
+                              </tr>
+                            </thead>
+                    
+                            <tbody>
+                            {% for banner in buscabanner %}
+                              <tr>
+                                <td width="30%"> <img src="/static/uploads/banner/{{ banner.nomesegurobanner }}"> </td>
+                                <td> {{ banner.texto  }} </td>
+                                <td> {{ banner.link  }}  </td>
+                                <td><a href="/removebanner/{{banner.id}}">Deletar</a></td>
+                              </tr>
+                              <tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    {% endif %}
+                </div>
+       
+    </div>
+{% endblock %}
+
+{% block pagination %}
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#texto' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+    <script>
+        $(document).ready(function() {
+        $('#posicaotexto').material_select();
+      });
+    </script>
+    <script>
+        function ShowDiv() {
+                 document.getElementById("progress").style.display = "";
+                 document.getElementById("progress2").style.display = "";
+              }
+    </script>
+{% endblock %}

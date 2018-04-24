@@ -1,0 +1,227 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{%block head %}
+{{ super() }}
+<style>
+    @media only screen and (max-width : 600px) {
+     .modal.open 
+        {
+            width: 100%;
+            max-height: 90%;
+            height: 90%;
+        }
+    }
+    
+     @media only screen and (min-width : 1200px) {
+     .modal.open 
+        {
+            width: 50%;
+            max-height: 40%;
+            height: 40%;
+        }
+    }
+    
+</style>
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+            
+  {% if buscabanner %}
+        <div class="slider hide-on-small-only">
+            <ul class="slides">
+                
+            {% for banner in buscabanner %}    
+              <li>
+               <a href="{{ banner.link }}"> <img src="/static/uploads/banner/{{ banner.nomesegurobanner  }}" class="responsive-img"> </a>
+                <div class="{{ banner.posicaotexto }} flow-text">
+                  {{ banner.texto|safe }}
+                  
+                </div>
+              </li>
+            {% endfor %} 
+             
+            </ul>
+        </div>     
+
+    {% endif %}
+
+{% endblock %}
+
+{%block title %} Imobiliária teste {% endblock %}
+
+
+
+
+  
+  
+{% block body %}
+               
+
+                
+&nbsp;
+  <div class="row">
+            <div class="col s12 center-align">
+                    <!-- Modal Trigger -->
+              <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Filtro</a>
+            
+              <!-- Modal Structure -->
+                  <div id="modal1" class="modal modal-fixed-footer" style="opacity:0.95;">
+                        <div class="modal-content">
+                             <form class="form form-horizontal" method="post" role="form" action="/1" id="form">
+                                 
+                                    {{ form.hidden_tag() }}
+                                    {{ wtf.form_errors(form, hiddens="only") }}
+                          
+                                &nbsp;
+                                <div class="row">
+                                    <div class="col s6 m4">
+                                         <b>Cidade</b>
+                                       {{ wtf.form_field(form.cidade) }}
+                                    </div>
+                                    <div class="col s6 m4">
+                                         <b>Bairro</b>
+                                       {{ wtf.form_field(form.bairro, placeholder="ex: Santa Luzia") }}
+                                    </div>
+                                     <div class="col s6 m4">
+                                         <b>Tipo de Imóvel</b>
+                                       {{ wtf.form_field(form.tipoimovel) }}
+                                    </div>
+                                    <div class="col s6 m3">
+                                         <b>Código do Imóvel</b>
+                                       {{ wtf.form_field(form.busca) }}
+                                    </div>
+                                    <div class="col s6 m3">
+                                         <b>Tipo de negócio</b>
+                                        {{ wtf.form_field(form.tiponegocio)}}
+                                    </div>
+                                    <div class="col s6 m3">
+                                         <b>Valor mínimo</b>
+                                      {{ wtf.form_field(form.valorminimo, pattern="[0-9]+$",type="number", class="validate", title="Utitize somente números")}}
+                                    </div>
+                                    <div class="col s6 m3">
+                                         <b>Valor máximo</b>
+                                        {{ wtf.form_field(form.valormaximo, pattern="[0-9]+$",type="number", class="validate", title="Utitize somente números")}}
+                                    </div>
+                                     <div class="col s6 m3">
+                                         <b>Nº de dormitórios</b>
+                                        {{ wtf.form_field(form.ndormitorios, pattern="[0-9]+$", type="number", class="validate", title="Utitize somente números")}}
+                                    </div>
+                                    <div class="col s6 m3">
+                                         <b>Nº de banheiros</b>
+                                        {{ wtf.form_field(form.nbanheiros, pattern="[0-9]+$", type="number", class="validate", title="Utitize somente números")}}
+                                    </div>
+                                    <div class="col s6 m3">
+                                         <b>Nº de suítes</b>
+                                        {{ wtf.form_field(form.nsuites, pattern="[0-9]+$", type="number", class="validate", title="Utitize somente números")}}
+                                    </div>
+                                    <div class="col s6 m3">
+                                         <b>Nº de garagens</b>
+                                        {{ wtf.form_field(form.ngaragem, pattern="[0-9]+$", type="number", class="validate", title="Utitize somente números")}}
+                                    </div>
+                                </div>
+                          
+                        </div>
+                    <div class="modal-footer">
+                      <div class="center-align"> {{ wtf.form_field(form.enviar) }}</div>
+                    </div>
+              </div>
+            </div>
+    </div>
+    <div class="row">
+            {% for imovel in imoveis %}
+    
+                <div class="col s12 m4" id="coluna">
+                    <a href="/imovel/{{imovel.id}}" class="grey-text text-darken-3">
+                    <div class="card z-depth-5 hoverable">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="materialboxed" data-caption="A picture of a way with a group of trees in a park" src="/static/uploads/thumb/{{ imovel.nomesegurofoto }}" >
+                            <span class="rotulo">R$ {{ imovel.valor }},00</span>
+                        </div>
+                        <div class="card-content">
+                            <div>
+                                <b style="font-size:20px;">{{  imovel.tipoimovel }} para {{ imovel.tiponegocio.lower() }}</b></br>
+                                &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true" title="Localização">&nbsp;{{ imovel.cidade }}, {{ imovel.bairro.title() }} </i>
+                            </div>
+                       
+                        <hr>
+                        </br>
+                                    <i class="fa fa-bed fa-lg" aria-hidden="true" title="Número de dormitórios">&nbsp;{{ imovel.ndormitorios }}&nbsp;</i>  
+                                    <i class="fa fa-bath fa-lg" aria-hidden="true" title="Número de suítes">&nbsp;{{  imovel.nsuite }}&nbsp;</i>
+                                    <i class="fa fa-car fa-lg" aria-hidden="true" title="Número de vagas na garagem">&nbsp;{{ imovel.ngaragem }}&nbsp;</i>
+                                    <i class="fa fa-shower fa-lg" aria-hidden="true" title="Número de banheiros">&nbsp;{{ imovel.nbanheiros }}&nbsp;</i>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+            {% endfor %}
+        
+        
+        
+        
+       
+    
+        
+    </div>
+ 
+{% endblock %}
+
+
+   
+{% block footer %}
+{{ super() }}
+<script>
+ tippy('.fa', {
+   arrow: true
+ })
+</script>
+
+
+<script>
+$('.card').addClass('animated zoomInUp');
+</script>
+
+<script>
+        $(document).ready(function() {
+        $('select').material_select();
+      });
+</script>
+
+
+<script>
+$(document).ready(function(){
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal();
+  });
+</script>
+<script>
+     $(document).ready(function(){
+      $('.slider').slider();
+    });
+        
+</script>
+<script>
+        $("#cidade")
+    .replaceWith('<select id="cidade" name="cidade" class="select-dropdown">' +
+          '<option value=""> </option>' +
+         {% for cidade in buscacidades %}
+          '<option value="{{ cidade.cidade }}"> {{ cidade.cidade }} </option>' +
+       {% endfor %}
+        '</select>');
+        
+    </script>
+    <script>
+        $("#cidade").change(function(){
+             $('#bairro').material_select('destroy');
+              $.get('/apibairros/?cidade='+$("#cidade").val(), function(data){
+                   $('#bairro').replaceWith('<select id="bairro" name="bairro">'+data+'</select>');
+                        $('#bairro').material_select();
+
+          });
+  
+             
+
+        });
+    </script>
+{% endblock %}

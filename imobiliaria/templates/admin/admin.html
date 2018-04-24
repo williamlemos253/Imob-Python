@@ -1,0 +1,58 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{%block head %}
+{{ super() }}
+
+
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %} Imobiliária teste {% endblock %}
+
+{% block body %}
+   &nbsp;
+    <div class="row">
+        
+        <div class="col s12">
+         <h4 class="center">Painel Administrativo</h4>
+         &nbsp;
+        </div>
+     
+        <div class="col s3">
+             
+             
+          <div class="collection">
+            <a href="/criacidade" class="collection-item center">Cadastrar cidade</a>    
+            <a href="/criabairro" class="collection-item center">Cadastrar bairro</a>  
+            <a href="/cadastro" class="collection-item center">Cadastrar imóveis</a>
+            <a href="/buscaimoveis" class="collection-item center">Editar imóveis e cadastrar fotos</a>
+            <a href="/criabanner" class="collection-item center">Cadastrar banners</a>
+            <a href="/cadastrodefuncionario" class="collection-item center">Cadastrar corretor</a>
+            <a href="/funcionarios" class="collection-item center">Listar corretores</a>
+          </div>
+             
+  
+        </div>
+        <div class="col s9">
+            <h5 class="center">FAQ</h5>
+            <b>Qual o tamanho recomendado para as imagens?</b>
+            <p>Apesar do sistema aceitar qualquer tamanho, para uma visualização com melhor qualidade recomendamos que as imagens tenham no mínimo 2 Megapixels.</p>
+            <b>Quais formatos de imagem são aceitos?</b>
+            <p>PNG e JPEG.</p>
+            <b>O que acontece se eu não preencher os campos não obrigatórios?</b>
+            <p>Eles nãos aparecerão em branco, serão omitidos nas consultas ao imóvel.</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pagination %}
+{% endblock %}
+
+
+{% block footer %}
+{{ super() }}
+{% endblock %}

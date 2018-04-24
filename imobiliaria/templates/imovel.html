@@ -1,0 +1,106 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{% block head %}
+ {{super()}}
+{% endblock %}
+
+{%block header %}
+ {{super()}}
+<link  href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+{% endblock %}
+{% block title %} Imóvel - detalhes{% endblock %}
+
+
+
+{% block body %}
+&nbsp;
+<div class="row">
+    <div class="col s12 m8">
+        <div class="card hoverable">
+            <div class="card-image" style="border-style: solid; border-width: 15px 15px 0px 15px; border-color: white;">
+                  <div class="fotorama z-depth-1"  data-nav="thumbs" data-allowfullscreen="true">
+                    <a href="/static/uploads/destaque/{{imovel.nomesegurofoto}}"><img src="/static/uploads/destaque/{{imovel.nomesegurofoto}}"></a>
+                    {% for foto in fotos %}
+                        <a href="/static/uploads/album/{{id}}/{{foto.nomesegurofoto}}"><img src="/static/uploads/album/{{id}}/{{foto.nomesegurofoto}}"></a> 
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        <h4 class="center-align">Detalhes</h4>
+                        <p class="flow-text">{{ imovel.tipoimovel }} disponível para {{ imovel.tiponegocio.lower() }} na cidade de {{ imovel.cidade }} localizado no bairro {{ imovel.bairro }}</p>
+                        <p class="flow-text">Código: {{ imovel.codigoimovel }} </p>
+                        <p class="flow-text">{{ imovel.ndormitorios }} {% if imovel.ndormitorios ==1 %}  dormitório {% else %} dormitórios  {% endif %}     
+                        | {{ imovel.nbanheiros }} {% if imovel.nbanheiros <=1 %} banheiro {% else %} banheiros {% endif %} 
+                        | {{ imovel.ngaragem }} {% if imovel.ngaragem == 1 %} vaga na garagem {% else %} vagas na garagem {% endif %} 
+                        | {{ imovel.nsuite }} {% if imovel.nsuite == 1 %} suíte {% else %} suítes {% endif %}</p>
+                        <p class="flow-text">A partir de <span class="red-text"><b>R$ {{ imovel.valor }},00</b></span>  </p>
+                    </div>
+            
+                
+                    <div class="col s12">
+                        {% if imovel.descricao %}    
+                            <h4 class="center-align">Descrição do imóvel</h4>
+                          {{ imovel.descricao|safe }}
+                        {% endif %}
+                        {% if imovel.endereco %}
+                            <div class="card-content">  
+                            <h4 class="center-align">Localização</h4>
+                                    <iframe
+                                          width="100%"
+                                          height="auto"
+                                          frameborder="0" style="border:0"
+                                          src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDeMRpRVx46N7rhayoWiLVI_no_DK7rhYw
+                                            &q={{imovel.endereco|urlencode}}" allowfullscreen>
+                                    </iframe>
+                            </div>   
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m4">
+           <img class="responsive-img circle" src="/static/uploads/perfil/fotoperfil.jpeg">
+                <p class="flow-text center-align">Adamastor Silva da Silva </br> Creci: 171.171 </br> <a  href="mailto:adamastor@imobiloja.com.br?Subject=Imóvel código: {{ imovel.codigoimovel }}" target="_top">adamastor@imobiloja.com.br</a> </p>
+                
+                 <a href="https://api.whatsapp.com/send?phone=5551991449704">Chat Whatsapp</a>
+                <p class="center-align">Solicite auxílio do corretor de imóveis:</p>
+                 {{ wtf.quick_form(form) }}
+               
+               <ul class="center-align">
+                   <p class="flow-text">Compartilhe este imóvel:</p>
+                   <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" style="color:#3b5998;"><i class="fa fa-facebook-square fa-5x" aria-hidden="true" title="Compartilhe no Facebook"></i></a>
+                   <a href="https://twitter.com/home?status={{request.url }}"><i class="fa fa-twitter-square fa-5x"  style="color:#33CCFF" aria-hidden="true" title="Compartilhe no Twitter"></i></a>
+                   <a href="https://www.linkedin.com/shareArticle?mini=true&url={{request.url }}= {{ imovel.descricao|safe }}&source=" style="color:#4875B4;"><i class="fa fa-linkedin-square fa-5x" aria-hidden="true" title="Compartilhe no linkedin"></i></a>
+                   <a href="mailto:titulo?&subject=teste@teste.com.br&body=askdnmasidn%20ioasdnioasdnasiodnasoidnasiodnas%20io%20dnasiod" style="color:#616161;"><i class="fa fa-envelope fa-5x" aria-hidden="true" title="Envie por E-mail"></i></a>
+                   <a href='whatsapp://send?text={{ request.url }}' style="color:#25d366"><i class="fa fa-whatsapp fa-5x" aria-hidden="true" title="Compartilhe no Whatsapp"></i></a>
+               </ul>
+   </div>
+    
+    
+</div>
+
+{% endblock %}
+
+{% block pagination %}
+{% endblock %}
+
+
+{% block footer %}
+{{ super() }}
+<script>
+ tippy('.fa', {
+   arrow: true
+ })
+</script>
+<script>
+ tippy('.new', {
+   arrow: true
+ })
+</script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script> <!-- 16 KB -->
+{% endblock %}

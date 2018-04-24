@@ -1,0 +1,74 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{%block head %}
+{{ super() }}
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %}Cadastro de corretores{% endblock %}
+
+{% block body %}
+
+&nbsp;
+                    <h4><center>Atualizar cadastro</center></h4>
+&nbsp;
+    <form class="form form-group" method="POST">
+         {{ Formcadastrofuncionario.hidden_tag() }}
+         {{ wtf.form_errors(Formcadastrofuncionario, hiddens="only") }}
+        <div class="row">
+            <div class="col m6">       
+                {{ wtf.form_field(Formcadastrofuncionario.username, pattern="^[a-z0-9_-]{6,20}$", 
+                title="O nome de usuário não pode conter caracteres especiais e espaços", value = usuarios.username)  }}
+            </div>
+            <div class="col m6">      
+                {{  wtf.form_field(Formcadastrofuncionario.email, value = usuarios.email ) }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.first_name, value= usuarios.first_name ) }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.last_name, value = usuarios.last_name) }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.datanasc, value = datanasc, 
+                pattern = "^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$", 
+                oninvalid="this.setCustomValidity('A data de nascimento precisa estar em um formato válido ex: 01/01/1991')") }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.sexo) }}
+            </div>
+            <div class="col m6"> 
+                {{ wtf.form_field(Formcadastrofuncionario.cpf, value = usuarios.cpf) }}
+            </div>
+            <div class="col m6">
+                <p>
+                  {{ Formcadastrofuncionario.active(checked = usuarios.active) }}
+                  <label for="active">Ativo</label>
+                </p>
+            </div>
+    
+            <div class="col m12">
+                 <div class="center">{{ wtf.form_field(Formcadastrofuncionario.salvar, class="btn btn-primary btn-lg") }}</div>
+            </div>
+        </div>
+    </form>
+    &nbsp;
+    
+{% endblock %}
+
+  {% block pagination %}
+    {% endblock %}
+
+{% block footer %}
+{{ super() }}
+<script>
+        $(document).ready(function() {
+        $('select').material_select();
+      });
+</script>
+
+{% endblock %}

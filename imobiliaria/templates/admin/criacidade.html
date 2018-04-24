@@ -1,0 +1,69 @@
+{% extends "layout/base.html" %}
+
+{%block head %}
+{{ super() }}
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %} Imobiliária teste {% endblock %}
+
+{% block body %}
+    <div class="row">
+        &nbsp;
+        <div class="col s12">
+           <form method="POST" action="/criacidade">
+                {{ form.csrf_token }}
+                {{ form.hidden_tag() }}
+                <div class="input-field col s6">
+                    {{ form.cidade(size=20, class="validate") }}
+                    <label for="cidade">Nome da cidade</label>
+                </div>
+                <div class="input-field col s6">
+                    &nbsp;
+                    <button class="btn-floating btn-large waves-effect waves-light red" onClick="refreshPage()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+            </form>
+                <div class-"col s12">
+                    &nbsp;
+                    
+                    
+                    {% if buscacidades %}
+                    
+                         <table class="highlight responsive-table">
+                            <thead>
+                              <tr>
+                                  <th>Cidade</th>
+                                  <th>Ações</th>
+                              </tr>
+                            </thead>
+                    
+                            <tbody>
+                            {% for cidade in buscacidades %}
+                              <tr>
+                                <td>{{cidade.cidade}}</td>
+                                <td><a href="/criabairro/{{cidade.id}}">Deletar</a></td>
+                              </tr>
+                              <tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    {% endif %}
+                </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pagination %}
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+<script>
+    function refreshPage(){
+        window.location.reload();
+    } 
+</script>
+{% endblock %}

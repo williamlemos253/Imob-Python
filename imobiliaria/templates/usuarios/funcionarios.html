@@ -1,0 +1,70 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{%block head %}
+{{ super() }}
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %}Lista de funcionários{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col s12">
+    &nbsp;
+    <h5 class="center">Lista de funcionários cadastrados</h5>
+    &nbsp;
+    <table class="bordered highlight responsive-table">
+        <thead>
+          <tr>
+              <th>Nome</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Ativo</th>
+              <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for usuario in usuarios %}
+            <tr>
+              <td>{{usuario.first_name}} {{usuario.last_name}}</td>
+              <td>{{usuario.username}}</td>
+              <td>{{usuario.email}}r</td>
+              <td>{% if usuario.active == True %} Ativo {% else %} Desativado {% endif %}</td>
+              <td><a href="/editafuncionario/{{usuario.id}}"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" title="editar"></i></a></td>
+            </tr>
+          {% endfor %}
+     
+        </tbody>
+      </table>
+            
+    
+    
+  </div>
+  
+  
+  
+</div>
+
+    
+    
+
+{% endblock %}
+
+  {% block pagination %}
+    {% endblock %}
+
+{% block footer %}
+{{ super() }}
+<script>
+ tippy('.fa', {
+   arrow: true
+ })
+</script>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+<html>
+        <head>
+            {% block head %}
+              <!--Import Google Icon Font-->
+              <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+              <!--Import materialize.css-->
+              <!-- Compiled and minified CSS -->
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"  integrity="sha384-OHBBOqpYHNsIqQy8hL1U+8OXf9hH6QRxi0+EODezv82DfnZoV7qoHAZDwMwEJvSw" crossorigin="anonymous">
+              <link rel="stylesheet"  href="{{ url_for('static', filename='css/componentes.css') }}">
+              <!--Let browser know website is optimized for mobile-->
+              <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+              <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            {% endblock %}
+            <title>{% block title %}{% endblock %}</title>
+        </head>
+    
+    
+    
+    <header>
+        {% block header %}
+            <nav>
+                <div class="nav-wrapper">
+                  <a href="/" class="brand-logo">Logo</a>
+                  <a href="/" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+                  <div class="container">
+                    <ul class="center hide-on-med-and-down">
+                      <li><a href="tel:51991449704" class="fa fa-phone fa-lg">&nbsp;(51)&nbsp;99144-9704</a></li>
+                      <li><a href="mailto:teste@imobiloja.com.br" class="fa fa-envelope-o fa-lg">&nbsp;teste@imobiloja.com</a></li>
+                    </ul>
+                    <ul class="right hide-on-med-and-down">
+                      <li><a href="/">Home</a></li>
+                      <li><a href="sass.html">Quem Somos</a></li>
+                      <li><a href="badges.html">Equipe</a></li>
+                      <li><a href="collapsible.html">Contato</a></li>
+                      <li><a href="mobile.html">Mobile</a></li>
+                    </ul>
+                  </div>
+                  <ul class="side-nav" id="mobile-demo">
+                    <li><a href="sass.html">Sass</a></li>
+                    <li><a href="badges.html">Components</a></li>
+                    <li><a href="collapsible.html">Javascript</a></li>
+                    <li><a href="mobile.html">Mobile</a></li>
+                  </ul>
+                </div>
+            </nav>
+        {% endblock %}
+    </header>
+    
+    <body>
+      <div class="container">
+        {% block mensagens %}
+          {# envia mensagens para o sistema #}
+            {% with messages = get_flashed_messages()  %}
+            {% if messages %}
+              {% for message in messages %}
+                <div class="col s12 red" style="padding:5px;">
+                  <h5 class="white-text center-align">{{ message }}</h5>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        {% endblock %}
+        <!-- Page Content goes here -->
+        {% block body %}{% endblock %}
+        
+       
+    {% block pagination %}
+           <div class="col s12">
+              &nbsp;
+              <ul class="pagination center-align">
+                  {% if paginaatual > 1 %}
+                      <li class="waves-effect"><a onclick="form.action='/{{ pagina }}'; form.submit();"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+                  {% endif %}
+                  
+                      {% for pagina in paginacao %}
+                        {% if pagina != paginaatual %} 
+                          <li class="waves-effect hoverable"><a  onclick="form.action='/{{ pagina }}'; form.submit();">{{ pagina }}</a></li>
+                        {% else %}
+                            <li class="waves-effect hoverable active" ><a onclick="form.action='/{{ pagina }}'; form.submit();">{{ pagina }}</a></li>
+                        {% endif %}
+                      {% endfor %}
+                      
+                  {% if paginaatual < npaginas - 1 %}
+                      <li class="waves-effect"><a onclick="form.action='/{{ pagina }}'; form.submit();"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                  {% endif %}
+              </ul>
+            </div>
+    {% endblock %}
+      </div>
+    </body>
+    
+    
+    
+     <footer class="page-footer">
+        {% block footer %}
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+          
+         <!-- Compiled and minified JavaScript -->
+         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+         <script src="https://unpkg.com/tippy.js@2.1.1/dist/tippy.all.min.js"></script>
+         <script> $(".button-collapse").sideNav();</script>
+      {% endblock %}
+ </footer>
+</html>
+
+
+

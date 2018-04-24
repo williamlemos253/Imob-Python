@@ -1,0 +1,117 @@
+{% extends "layout/base.html" %}
+{% import "material/wtf.html" as wtf %}
+
+{%block head %}
+{{ super() }}
+
+
+{% endblock %}
+
+{%block header %}
+{{ super() }}
+{% endblock %}
+
+{%block title %} Imobiliária teste {% endblock %}
+
+{% block body %}
+   &nbsp;
+    <div class="row">
+     
+         <div class"col s12">
+            {{ wtf.quick_form(form, action="/buscaimoveis/1", id="form") }}
+             
+         </div>
+     
+        <div class="col s6">
+            
+           <h4 class="right-align">Adicionar Imóvel</h4> 
+          
+        </div>
+        
+        <div class="col s6">
+             <a href="/cadastro"><button class="btn-floating btn-large waves-effect waves-light red hoverable" title="Clique aqui para cadastrar um novo imóvel"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+        </div>
+        
+        <div class="col s12">
+                    {% if buscaimoveis %}
+                            &nbsp;
+                         <table class="highlight centered bordered" data-filtering="true" id="table">
+                            <thead>
+                              <tr>
+                                  <th>Foto</th>
+                                  <th>Código</th>
+                                  <th>Cidade</th>
+                                  <th>Bairro</th>
+                                  <th>Ações</th>
+                                  
+                              </tr>
+                            </thead>
+                    
+                            <tbody>
+                            {% for imovel in buscaimoveis %}
+                              <tr>
+                                <td> <img class="responsive-img" src="/static/uploads/thumb/{{ imovel.nomesegurofoto }}" ></td>
+                                <td>{{imovel.codigoimovel}}</td>
+                                <td>{{imovel.cidade}}</td>
+                                <td>{{imovel.bairro}}</td>
+                                <td>
+                                    <a href="/deletaimovel/{{imovel.id}}" onclick="return confirm('Tem certeza de que deseja excluir todos os dados referentes a este imóvel?');">
+                                        <i class="fa fa-trash-o fa-2x" aria-hidden="true" title="Deletar"></i>
+                                    </a>
+                                    <a href="/editaimovel/{{imovel.id}}">
+                                        <i class="fa fa-pencil-square fa-2x" aria-hidden="true" title="Editar"></i>
+                                    </a>
+                                    <a href="/galeria/{{imovel.id}}">
+                                        <i class="fa fa-picture-o fa-2x" aria-hidden="true" title="Galeria de Fotos"></i>
+                                    </a>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    {% endif %}
+                </div>
+        </div>
+    </div>
+{% endblock %}
+
+    {% block pagination %}
+           <div class="col s12">
+              &nbsp;
+              <ul class="pagination center-align">
+                  {% if paginaatual > 1 %}
+                      <li class="waves-effect"><a onclick="form.action='/buscaimoveis/{{ pagina }}'; form.submit();"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+                  {% endif %}
+                  
+                      {% for pagina in paginacao %}
+                        {% if pagina != paginaatual %} 
+                          <li class="waves-effect hoverable"><a  onclick="form.action='/buscaimoveis/{{ pagina }}'; form.submit();">{{ pagina }}</a></li>
+                        {% else %}
+                            <li class="waves-effect hoverable active" ><a onclick="form.action='/buscaimoveis/{{ pagina }}'; form.submit();">{{ pagina }}</a></li>
+                        {% endif %}
+                      {% endfor %}
+                      
+                  {% if paginaatual < npaginas - 1 %}
+                      <li class="waves-effect"><a onclick="form.action='/buscaimoveis/{{ pagina }}'; form.submit();"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                  {% endif %}
+              </ul>
+            </div>
+    {% endblock %}
+
+{% block footer %}
+{{ super() }}
+
+    <script>
+        $(document).ready(function() {
+        $('select').material_select();
+      });
+    </script>
+
+<script>
+ tippy('.fa', {
+   arrow: true
+ })
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Cadastro de Paciente{% endblock %}
+
+{% block body %} 
+
+
+&nbsp;
+                    <h4><center>Atualizar cadastro</center></h4>
+&nbsp;
+    <form class="form form-group" method="POST">
+         {{ Formcadastropaciente.csrf_token }}
+         {{ Formcadastropaciente.hidden_tag() }}
+         {{ wtf.form_errors(Formcadastropaciente, hiddens="only") }}
+        <div class="row">
+            <div class="col-sm-6">       
+                {{ wtf.form_field(Formcadastropaciente.username, pattern="^[a-z0-9_-]{6,20}$", 
+                title="O nome de usuário não pode conter caracteres especiais e espaços", value = usuarios.username)  }}
+            </div>
+            <div class="col-sm-6">      
+                {{  wtf.form_field(Formcadastropaciente.email, value = usuarios.email ) }}
+            </div>
+            <div class="col-sm-6"> 
+                {{ wtf.form_field(Formcadastropaciente.first_name, value= usuarios.first_name ) }}
+            </div>
+            <div class="col-sm-6"> 
+                {{ wtf.form_field(Formcadastropaciente.last_name, value = usuarios.last_name) }}
+            </div>
+            <div class="col-sm-6"> 
+                {{ wtf.form_field(Formcadastropaciente.datanasc, value = datanasc, 
+                pattern = "^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$", 
+                oninvalid="this.setCustomValidity('A data de nascimento precisa estar em um formato válido ex: 01/01/1991')") }}
+            </div>
+            <div class="col-sm-6"> 
+                {{ wtf.form_field(Formcadastropaciente.sexo) }}
+            </div>
+            <div class="col-sm-6"> 
+                {{ wtf.form_field(Formcadastropaciente.active) }}
+            </div>
+            <div class="col-sm-6"> 
+                {{ wtf.form_field(Formcadastropaciente.cpf, value = usuarios.cpf) }}
+            </div>
+    
+            <div class="col-12">
+                 <div class="text-center">{{ wtf.form_field(Formcadastropaciente.salvar, class="btn btn-primary btn-lg") }}</div>
+            </div>
+        </div>
+    </form>
+    &nbsp;
+
+    
+{% endblock %}
